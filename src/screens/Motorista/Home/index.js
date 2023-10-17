@@ -1,5 +1,7 @@
 import {requestForegroundPermissionsAsync, getCurrentPositionAsync} from 'expo-location'
 import BottomSheet from 'react-native-simple-bottom-sheet';
+import { Entypo, FontAwesome, AntDesign, FontAwesome5, Ionicons } from '@expo/vector-icons';
+
 import { useEffect, useState, useRef } from 'react'
 import styles from './style'
 import { onAuthStateChanged } from 'firebase/auth';
@@ -50,7 +52,7 @@ export default function MHomeRota ({route, navigation}) {
     
     return(
         <View style={{flex:1, backgroundColor: 'white', alignItems:'center'}}>
-
+            
             {longi ? <MapView style={styles.map}
                 initialRegion={{
                     latitude: lati,
@@ -60,6 +62,11 @@ export default function MHomeRota ({route, navigation}) {
                 }}
               >
             </MapView> : null}
+            <View  style={{position:'absolute'}}>
+                <TouchableOpacity onPress={()=>navigation.openDrawer()}>
+                    <Entypo name="menu" size={29} color="black" style={{paddingTop:30}}/>
+                </TouchableOpacity>
+            </View>
             
             {!open?(
                 <TouchableOpacity onPress={() => navigation.navigate('HomeRotaMotorista')} style={{width:'90%', backgroundColor:'yellow', alignItems: 'center', height:60, justifyContent:'center', borderRadius:50, marginTop:'50%'}}>
@@ -76,7 +83,7 @@ export default function MHomeRota ({route, navigation}) {
                     {open?(
                         <View style={{alignItems:'center', padding:20, gap:50, height:550}}>
                             <Text style={{fontFamily:'AileronR', fontSize: 30}}>{currentDate}</Text>
-                            <TouchableOpacity style={{width:'90%', backgroundColor:'yellow', alignItems: 'center', height:60, justifyContent:'center', borderRadius:50}}>
+                            <TouchableOpacity style={{width:'90%', backgroundColor:'yellow', alignItems: 'center', height:60, justifyContent:'center', borderRadius:50}} onPress={()=>navigation.navigate('Pedidos')}>
                                 <Image source={require('../../../../assets/gradient.png')} style={styles.gradient}/>
                                 <Text style={{fontFamily:'AileronR', fontSize:25, position:'absolute'}}>Pedidos de Contratação</Text>
                             </TouchableOpacity>

@@ -8,7 +8,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import {  setDoc, doc,  } from 'firebase/firestore';
 import { onAuthStateChanged } from "firebase/auth";
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import MaskInput from 'react-native-mask-input';
+import { TextInputMask } from 'react-native-masked-text';
 
 
 
@@ -33,7 +33,7 @@ export default function CadastroResponsavel ({navigation}) {
                     onAuthStateChanged(auth, (user) => {
                         if (user) {
                             const uid = user.uid;
-                            setDoc(doc(db, 'responsavel', uid), {nome:nomeU, email: emailU, telefone:telefoneU})
+                            setDoc(doc(db, 'responsavel', uid), {nome:nomeU, email: emailU, telefone:telefoneU, mensalidade:'Nenhum valor foi inserido.'})
                             navigation.navigate('alunoCadastro');
                         }
                     });         
@@ -83,7 +83,7 @@ export default function CadastroResponsavel ({navigation}) {
                     </View>
                     <View style={{flexDirection:'row', alignItems:'center', paddingVertical:5}}>
                         <Entypo name="phone" size={20} color="#4D4D4D" style={showElementTelefone ? styles.iconErro : styles.icon}/>
-                        <MaskInput style={showElementTelefone ? styles.inputErro : styles.input} placeholder="Telefone" value={telefoneU} onChangeText={value => setTelefoneU(value)} inputMode='tel' autoComplete='tel' maxLength={15} mask={['(', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}/>
+                        <TextInputMask style={showElementTelefone ? styles.inputErro : styles.input} placeholder="Telefone" value={telefoneU} onChangeText={value => setTelefoneU(value)} maxLength={15} type={'cel-phone'}options={{maskType: 'BRL', withDDD: true, dddMask: '(99) '}}/>
                     </View>
                     <View style={{flexDirection:'row', alignItems:'center', paddingVertical:5}}>
                         <MaterialIcons name="lock" size={20} color="#4D4D4D" style={showElementSenha ? styles.iconErro : styles.icon}/>

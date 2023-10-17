@@ -26,7 +26,7 @@ export default function Login ({navigation}) {
                     const snap = await getDoc(userRef)
                     const verify = snap.data()
                         if(verify == undefined){
-                            navigation.navigate('HomeMotorista')
+                            navigation.navigate('drawerM')
                         }
                         else{
                             // navigation.navigate('RHome')

@@ -1,0 +1,50 @@
+import {StyleSheet} from 'react-native'
+
+
+
+export default StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        backgroundColor: '#FFBF00',
+        padding: 8,
+      },
+      fundoTab:{
+        flex:1,
+        backgroundColor: '#fff',
+        width:'100%',
+        marginTop:10,
+        borderRadius: 40,
+        borderBottomEndRadius:0,
+        borderBottomStartRadius:0,
+        alignItems:'center',
+      },
+      fundoEscola:{
+        borderRadius: 20,
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 3,
+        },
+        shadowOpacity: 0.29,
+        shadowRadius: 4.65,
+        elevation: 7,
+      },
+      nome:{
+        fontSize:16,
+        marginBottom:2,
+        marginLeft:'5%',
+        fontWeight:'bold',
+        alignSelf:'center'
+      },
+      botaoEscola:{
+        width:'90%',
+        height: 80,
+        backgroundColor: 'white',
+        marginTop:'5%',
+      },
+      iconBack:{
+        marginLeft:5,
+        marginTop:13
+      },
+    });

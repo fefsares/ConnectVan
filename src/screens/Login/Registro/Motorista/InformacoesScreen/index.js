@@ -6,12 +6,13 @@ import {db, auth} from '../../../../../firebase/config';
 import { onAuthStateChanged } from 'firebase/auth';
 import { Feather  } from '@expo/vector-icons';
 import MaskInput from 'react-native-mask-input';
+import { TextInputMask } from 'react-native-masked-text';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function InformacoesMotorista ({navigation}) {
     const [placaU, setPlacaU] = useState('');
     const [nomeU, setNomeU] = useState('');
-    const [cnpjU, setCnpjU] = useState('');
+    const [cpfU, setCpfU] = useState('');
     const [showElementNome, setShowElementNome] = useState(false)
     const [showElementCNPJ, setShowElementCNPJ] = useState(false)
     const [showElementPlaca, setShowElementPlaca] = useState(false)
@@ -22,7 +23,7 @@ export default function InformacoesMotorista ({navigation}) {
             if (user) {
                 const docRef = doc(db, 'motorista', user.uid)
 
-                updateDoc(docRef,{nome: nomeU, placa: placaU, cnpj:cnpjU})
+                updateDoc(docRef,{nome: nomeU, placa: placaU, cpf:cpfU})
                 // navigation.navigate('');
                 console.log('Home')
                 
@@ -51,7 +52,7 @@ export default function InformacoesMotorista ({navigation}) {
                 
                 <View style={{width:'100%',paddingTop:10}}>
                     <TextInput style={showElementNome?styles.inputErro:styles.input} placeholder="Nome e Sobrenome" value={nomeU} onChangeText={value => setNomeU(value)} autoCapitalize='words'/>
-                    <MaskInput style={showElementCNPJ?styles.inputErro:styles.input} placeholder="CNPJ" value={cnpjU} onChangeText={value => setCnpjU(value)} maxLength={18} mask={[ /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/, '-',  /\d/, /\d/]} inputMode='tel'/>
+                    <TextInputMask style={showElementCNPJ?styles.inputErro:styles.input} placeholder="CPF" value={cpfU} onChangeText={value => setCpfU(value)} type={'cpf'}/>
                     <MaskInput style={showElementPlaca?styles.inputErro:styles.input} placeholder="Placa do carro" value={placaU} onChangeText={value => setPlacaU(value)} autoCapitalize='characters' maxLength={7}/>
                 </View>
 
