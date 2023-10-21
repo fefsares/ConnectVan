@@ -7,10 +7,10 @@ import {db, auth} from '../../../firebase/config';
 import {  doc, getDoc, collectionGroup, query, where, getDocs} from 'firebase/firestore';
 
 export default function PassageirosEscola({navigation, route}) {
-    const {esc} = route.params
+    const {cid} = route.params
     const alunos = []
     const [passageiros, setPassageiros] = useState([])
-    const q = query(collectionGroup(db, 'passageiros'), where('escola','==', esc))
+    const q = query(collectionGroup(db, 'passageiros'), where('cidade','==', cid))
     useEffect(()=>{
         pesquisa()
     }, [])
@@ -39,9 +39,8 @@ export default function PassageirosEscola({navigation, route}) {
           </Text>
 
             {passageiros.map((item)=>{
-                const idA = item;
                 return(
-                <TouchableOpacity style={styles.botaoEscola} onPress={()=>navigation.navigate('InfoAluno', {idA})}>
+                <TouchableOpacity style={styles.botaoEscola}>
                 <View style={styles.fundoEscola}>
                   <View style={{padding:18, flexDirection:'row'}}>
                     <Image

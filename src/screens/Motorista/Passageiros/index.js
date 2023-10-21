@@ -7,10 +7,10 @@ import {db, auth} from '../../../firebase/config';
 import {  doc, getDoc, collectionGroup, query, where, getDocs} from 'firebase/firestore';
 
 export default function PassageirosEscola({navigation, route}) {
-    const {esc} = route.params
     const alunos = []
     const [passageiros, setPassageiros] = useState([])
-    const q = query(collectionGroup(db, 'passageiros'), where('escola','==', esc))
+    const q = query(collectionGroup(db, 'passageiros'), where('escola','!=', ''))
+
     useEffect(()=>{
         pesquisa()
     }, [])
@@ -31,10 +31,10 @@ export default function PassageirosEscola({navigation, route}) {
           <TouchableOpacity>
             <Entypo name="chevron-left" size={29} color="black" style={styles.iconBack}/>
           </TouchableOpacity>
-          <Text style={{marginTop:'5%', fontSize:18, fontWeight:'bold', marginLeft:'9%'}}>{esc}</Text>
+          <Text style={{marginTop:'5%', fontSize:18, fontWeight:'bold', marginLeft:'9%'}}>Passageiros</Text>
         </View>
         <View style={styles.fundoTab}>
-          <Text style={{fontSize:18, fontWeight:'bold', marginTop:'5%'}} onPress={()=>pesquisa()}>
+          <Text style={{fontSize:18, fontWeight:'bold', marginTop:'5%'}}>
             TODOS ({passageiros.length})
           </Text>
 

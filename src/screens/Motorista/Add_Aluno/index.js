@@ -8,7 +8,7 @@ import {  setDoc, doc, getDoc, updateDoc, arrayUnion , deleteField, arrayRemove 
 
 
 export default function AddAluno ({route, navigation}) {
-    const { idR, mensalidade, vencimento } = route.params;
+    const { idR, mensalidade, vencimento, key } = route.params;
     const [rec, setRec] = useState('');
     const [mensagem, setmensagem] = useState('')
 
@@ -39,7 +39,8 @@ export default function AddAluno ({route, navigation}) {
             if (user) {
                 const docRef = doc(db, 'motorista', user.uid)
                 updateDoc(docRef, {solicitacao: arrayRemove(idR), contratos: arrayUnion(idR)})
-                setDoc(doc(db, 'motorista', user.uid, 'passageiros', rec.nomeAluno[0]))
+                setDoc(doc(db, 'motorista', user.uid, 'passageiros', rec.nomeAluno[0]), {nome: rec.nomeAluno[0], endereco: rec.endereco[0], escola: rec.escola[0], responsavel:rec.nome, sala: rec.sala[0], serie: rec.serie[0], periodo: rec.periodo[0], telefone_responsavel: rec.telefone})
+                setDoc(doc(db, 'motorista', user.uid, 'responsavel', rec.nome), {nome: rec.nome, mensalidade: mensalidade, data: vencimento, pago: true, filho: arrayUnion(rec.nomeAluno[0])})
                 updateDoc(doc(db, 'responsavel', idR), {motorista: user.uid, mensalidade: mensalidade, data: vencimento})
             }
         });

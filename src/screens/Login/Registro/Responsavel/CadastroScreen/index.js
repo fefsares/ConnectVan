@@ -33,7 +33,7 @@ export default function CadastroResponsavel ({navigation}) {
                     onAuthStateChanged(auth, (user) => {
                         if (user) {
                             const uid = user.uid;
-                            setDoc(doc(db, 'responsavel', uid), {nome:nomeU, email: emailU, telefone:telefoneU, mensalidade:'Nenhum valor foi inserido.'})
+                            setDoc(doc(db, 'responsavel', uid), {nome:nomeU, email: emailU, telefone:telefoneU, mensalidade:0})
                             navigation.navigate('alunoCadastro');
                         }
                     });         

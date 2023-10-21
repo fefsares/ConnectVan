@@ -7,9 +7,7 @@ import {db, auth} from '../../../firebase/config';
 import {  doc, getDoc, collectionGroup, query, where, getDocs} from 'firebase/firestore';
 
 export default function CidadesMotorista ({route, navigation}) {
-    const [escolas, setEscolas]=useState([]);
-    const alunos = []
-    const [passageiros, setPassageiros] = useState('')
+    const [cidades, setCidades]=useState([]);
     
     useEffect(()=>{
         onAuthStateChanged(auth, async (user) => {
@@ -17,24 +15,13 @@ export default function CidadesMotorista ({route, navigation}) {
               const docRef = doc(db, 'motorista', user.uid)
               const snapshot = await getDoc(docRef)
   
-              setEscolas(snapshot.data().cidade)
+              setCidades(snapshot.data().cidade)
               
             }
              
           });
 
     },[])
-
-    const pesquisa =async (item)=>{
-        const q = query(collectionGroup(db, 'passageiros'), where('cidade','==', item))
-        const queryy = await getDocs(q)
-        
-          queryy.forEach((aluno) => {
-              alunos.push(aluno.id)
-          })
-          setPassageiros(alunos.length)
-        
-    }
   return (
     <SafeAreaView style={styles.container}>
       
@@ -47,25 +34,20 @@ export default function CidadesMotorista ({route, navigation}) {
 
       <View style={styles.fundoTab}>
         <Text style={{fontSize:18, fontWeight:'bold', marginTop:'5%'}}>
-          TODAS ({escolas.length})
+          TODAS ({cidades.length})
         </Text>
-        {escolas.map((item) => {
-            
-            pesquisa(item);
+        {cidades.map((item) => {
+            const cid = item;
             return (
-            <TouchableOpacity style={styles.botaoEscola}>
+            <View style={styles.botaoEscola}>
                 <View style={styles.fundoEscola}>
                     <View style={{padding:18}}>
                     <Text style={{fontSize:17, marginBottom:2, fontWeight:'bold'}}>{item}</Text>
-                    <Text style={{fontSize:14}}>{passageiros} passageiros.</Text>
                     <View style={{position:'absolute', marginLeft:'82%', marginTop:'3%'}}>
-                    <TouchableOpacity>
-                        <Entypo name="chevron-right" size={23} color="black" />
-                    </TouchableOpacity>
                     </View>
                     </View>
                 </View>
-            </TouchableOpacity>
+            </View>
             );
         })}
         

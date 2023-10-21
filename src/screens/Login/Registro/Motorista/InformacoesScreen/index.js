@@ -14,18 +14,17 @@ export default function InformacoesMotorista ({navigation}) {
     const [nomeU, setNomeU] = useState('');
     const [cpfU, setCpfU] = useState('');
     const [showElementNome, setShowElementNome] = useState(false)
-    const [showElementCNPJ, setShowElementCNPJ] = useState(false)
+    const [showElementCPF, setShowElementCPF] = useState(false)
     const [showElementPlaca, setShowElementPlaca] = useState(false)
 
     async function salvar(){
-        if(placaU.length==7 && cnpjU.length==18 && !nomeU==''){
+        if(placaU.length==7 && cpfU.length==14 && !nomeU==''){
             onAuthStateChanged(auth, async (user) => {
             if (user) {
                 const docRef = doc(db, 'motorista', user.uid)
 
                 updateDoc(docRef,{nome: nomeU, placa: placaU, cpf:cpfU})
-                // navigation.navigate('');
-                console.log('Home')
+                navigation.navigate('drawerM');
                 
             }
             });
@@ -34,8 +33,8 @@ export default function InformacoesMotorista ({navigation}) {
             if(nomeU==''){
                 setShowElementNome(true)
             }
-            if(cnpjU.length!=18){
-                setShowElementCNPJ(true)
+            if(cpfU.length!=14){
+                setShowElementCPF(true)
             }
             if(placaU.length!=7){
                 setShowElementPlaca(true)
@@ -52,7 +51,7 @@ export default function InformacoesMotorista ({navigation}) {
                 
                 <View style={{width:'100%',paddingTop:10}}>
                     <TextInput style={showElementNome?styles.inputErro:styles.input} placeholder="Nome e Sobrenome" value={nomeU} onChangeText={value => setNomeU(value)} autoCapitalize='words'/>
-                    <TextInputMask style={showElementCNPJ?styles.inputErro:styles.input} placeholder="CPF" value={cpfU} onChangeText={value => setCpfU(value)} type={'cpf'}/>
+                    <TextInputMask style={showElementCPF?styles.inputErro:styles.input} placeholder="CPF" value={cpfU} onChangeText={value => setCpfU(value)} type={'cpf'}/>
                     <MaskInput style={showElementPlaca?styles.inputErro:styles.input} placeholder="Placa do carro" value={placaU} onChangeText={value => setPlacaU(value)} autoCapitalize='characters' maxLength={7}/>
                 </View>
 
@@ -71,12 +70,12 @@ export default function InformacoesMotorista ({navigation}) {
                             <Text style={{fontFamily:'AileronR', fontSize:21, color:'white'}}>Insira o nome completo.</Text>
                         </View>
                     ):null}
-                    {showElementCNPJ==true ? (
+                    {showElementCPF==true ? (
                         <View style={{ backgroundColor:'#f02929', marginTop: 10, padding:10, flexDirection:'row', width:'100%'}}>
-                            <TouchableOpacity onPress={()=>setShowElementCNPJ(false)}>
+                            <TouchableOpacity onPress={()=>setShowElementCPF(false)}>
                                 <Feather name="x" size={20} color="white" />
                             </TouchableOpacity>
-                            <Text style={{fontFamily:'AileronR', fontSize:21, color:'white'}}>Insira o CNPJ.</Text>
+                            <Text style={{fontFamily:'AileronR', fontSize:21, color:'white'}}>Insira um CPF válido.</Text>
                         </View>
                     ):null}
                     {showElementPlaca==true ? (

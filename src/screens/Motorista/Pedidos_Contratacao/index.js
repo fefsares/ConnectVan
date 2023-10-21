@@ -14,6 +14,7 @@ export default function Pedidos ({navigation}) {
     const [mensagem, setmensagem] = useState('')
     const [nomeM, setNomeM] = useState('')
     
+    
 
     useEffect(()=>{
         onAuthStateChanged(auth, async (user) => {
@@ -61,13 +62,33 @@ export default function Pedidos ({navigation}) {
           TODOS ({arr.length})
         </Text>
         {arr.map((item) => {
+                const filhos = item.nomeAluno.length
                 const idR = item.idResponsavel;
-                return (
-                    <TouchableOpacity style={styles.botaoEscola} onPress={()=> navigation.navigate('AddAluno', {idR})}>
+                const key = 0;
+                if(filhos == 1){
+                  return(
+                    <TouchableOpacity style={styles.botaoEscola} onPress={()=> navigation.navigate('AddAluno', {idR, key})}>
                     <View style={styles.fundoEscola}>
                       <View style={{padding:18}}>
-                        <Text style={{fontSize:17, marginBottom:2, fontWeight:'bold'}}>{item.nome}</Text>
-                        <Text style={{fontSize:14}}>{item.escola[0]}</Text>
+                        <Text style={{fontSize:17, marginBottom:2, fontFamily:'AileronH'}}>{item.nome}</Text>
+                        <Text style={{fontSize:14, fontFamily:'AileronR'}}>{filhos} filho</Text>
+                        <View style={{position:'absolute', marginLeft:'82%', marginTop:'3%'}}>
+                          <TouchableOpacity onPress={()=>Linking.openURL('whatsapp://send?text='+ mensagem +'&phone=' + item.telefone)}>
+                            <FontAwesome name="whatsapp" size={24} color="black" />
+                          </TouchableOpacity>
+                        </View>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                  )
+                }
+                else{
+                return (
+                    <TouchableOpacity style={styles.botaoEscola} onPress={()=> navigation.navigate('AddAlunos', {idR, filhos})}>
+                    <View style={styles.fundoEscola}>
+                      <View style={{padding:18}}>
+                        <Text style={{fontSize:17, marginBottom:2, fontFamily:'AileronH'}}>{item.nome}</Text>
+                        <Text style={{fontSize:14, fontFamily:'AileronR'}}>{filhos} filhos</Text>
                         <View style={{position:'absolute', marginLeft:'82%', marginTop:'3%'}}>
                           <TouchableOpacity onPress={()=>Linking.openURL('whatsapp://send?text='+ mensagem +'&phone=' + item.telefone)}>
                             <FontAwesome name="whatsapp" size={24} color="black" />
@@ -77,6 +98,7 @@ export default function Pedidos ({navigation}) {
                     </View>
                   </TouchableOpacity>
                 );
+                }
             })}
         
 
