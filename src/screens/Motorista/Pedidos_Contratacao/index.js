@@ -51,9 +51,9 @@ export default function Pedidos ({navigation}) {
     <SafeAreaView style={styles.container}>
       
       <View style={{flexDirection:'row', paddingHorizontal:10}}>
-        <TouchableOpacity onPress={()=>navigation.openDrawer()}>
-          <Entypo name="menu" size={29} color="black" style={[styles.iconMenu, {marginTop:13}]}/>
-        </TouchableOpacity>
+          <TouchableOpacity onPress={()=>navigation.navigate('HomeMotorista')}>
+            <Entypo name="chevron-left" size={29} color="black" style={styles.iconBack}/>
+          </TouchableOpacity>
         <Text style={{marginTop:'5%', fontSize:18, fontWeight:'bold', marginLeft:'7%'}}>Pedidos de Contratação</Text>
       </View>
 

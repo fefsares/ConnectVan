@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {View, Text, Image, TouchableOpacity, TextInput, Modal, Alert} from 'react-native'
 import styles from './style'
 import { onAuthStateChanged } from 'firebase/auth';
-import {db, auth} from '../../../../../firebase/config';
+import {db, auth} from '../../../firebase/config';
 import {  doc, updateDoc, arrayUnion  } from 'firebase/firestore';
 import MaskInput from 'react-native-mask-input';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -44,7 +44,7 @@ export default function RegistroAluno ({route, navigation}) {
           if (user) {
             const uid = user.uid;
             updateDoc(doc(db, 'responsavel', uid), {nomeAluno:arrayUnion(nomeA), escola:arrayUnion(escolaA), serie:arrayUnion(serieA), sala:arrayUnion(salaA), periodo:arrayUnion(periodoValue), endereco:arrayUnion(enderecoA)});
-            navigation.navigate('drawerR');
+            navigation.navigate('Passageiros');
             
           }
         });
@@ -127,11 +127,11 @@ export default function RegistroAluno ({route, navigation}) {
                         </View>
                         <View style={{flexDirection:'row', gap:9, marginTop:10}}>
                           <TouchableOpacity style={styles.botao} onPress={() => limpar()}>
-                            <Image source={require('../../../../../../assets/gradient2.png')} style={styles.gradient}/>
+                            <Image source={require('../../../../assets/gradient2.png')} style={styles.gradient}/>
                             <Text style={{fontFamily:'AileronR', fontSize:20, position:'absolute'}}>Limpar</Text>
                           </TouchableOpacity>
                           <TouchableOpacity style={styles.botao} onPress={() => salveEndereco()}>
-                            <Image source={require('../../../../../../assets/gradient.png')} style={styles.gradient}/>
+                            <Image source={require('../../../../assets/gradient.png')} style={styles.gradient}/>
                             <Text style={{fontFamily:'AileronR', fontSize:20, position:'absolute'}}>Salvar</Text>
                           </TouchableOpacity>
                         </View>
@@ -176,12 +176,8 @@ export default function RegistroAluno ({route, navigation}) {
             </View>
 
             <View style={{flexDirection:'row', paddingVertical:10, width:'100%', gap:10}}>
-              <TouchableOpacity style={styles.botao} onPress={() => navigation.navigate('RHome')}>
-                <Image source={require('../../../../../../assets/gradient2.png')} style={styles.gradient}/>
-                <Text style={{fontFamily:'AileronR', fontSize:20, position:'absolute'}}>Mais tarde</Text>
-              </TouchableOpacity>
               <TouchableOpacity style={styles.botao} onPress={() => salvar()}>
-                <Image source={require('../../../../../../assets/gradient.png')} style={styles.gradient}/>
+                <Image source={require('../../../../assets/gradient.png')} style={styles.gradient}/>
                 <Text style={{fontFamily:'AileronR', fontSize:20, position:'absolute'}}>Salvar</Text>
               </TouchableOpacity>
 

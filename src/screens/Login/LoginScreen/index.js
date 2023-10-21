@@ -29,8 +29,7 @@ export default function Login ({navigation}) {
                             navigation.navigate('drawerM')
                         }
                         else{
-                            // navigation.navigate('RHome')
-                            console.log('Home Responsavel')
+                            navigation.navigate('drawerR')
                         }
                     
                 }

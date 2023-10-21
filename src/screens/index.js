@@ -20,6 +20,12 @@ import InfoAluno from './Motorista/Info_Aluno/index'
 import Passageiros from './Motorista/Passageiros/index'
 import SplashScreen from './SplashScreen/index'
 import EditarPerfilM from './Motorista/Editar_perfil/index'
+import Mensalidades from './Motorista/Mensalidade/index'
+import HomeResponsavel from './Responsável/Home/index'
+import MensalidadeR from './Responsável/Mensalidade/index'
+import PassageiroR from './Responsável/Passageiros/index'
+import AddPassageiro from './Responsável/AlunoScreen/index'
+import TelaAluno from './Responsável/Passageiro/index'
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { createStackNavigator } from '@react-navigation/stack';
@@ -33,12 +39,21 @@ function DrawerM() {
         <Drawer.Screen name="HomeMotorista" component={HomeMotoristaScreen} options={{title:'Home'}}/>
         <Drawer.Screen name='Escolas' component={Escolas}/>
         <Drawer.Screen name='Cidades' component={EditarCidades}/>
-        <Drawer.Screen name='Pedidos' component={Pedidos} options={{title:''}}/>
         <Drawer.Screen name='Passageiros' component={Passageiros}/>
         <Drawer.Screen name='Perfil' component={EditarPerfilM}/>
-        {/* fazer o negócio sumir */}
+        <Drawer.Screen name='Mensalidades' component={Mensalidades}/>
       </Drawer.Navigator>
     );
+  }
+
+  function DrawerR(){
+    return(
+    <Drawer.Navigator screenOptions={{headerShown:false}}>
+      <Drawer.Screen name="Home" component={HomeResponsavel}/>
+      <Drawer.Screen name='Mensalidade' component={MensalidadeR}/>
+      <Drawer.Screen name='Passageiros' component={PassageiroR}/>
+    </Drawer.Navigator>
+    )
   }
 
 export default function Rotas({navigation}){
@@ -47,6 +62,7 @@ export default function Rotas({navigation}){
             <Stack.Screen name='splash' component={SplashScreen}/>
             <Stack.Screen name='login' component={LoginScreen}/>
             <Stack.Screen name='drawerM' component={DrawerM}/>
+            <Stack.Screen name='drawerR' component={DrawerR}/>
             <Stack.Screen name='preRegistro' component={PreRegistroScreen}/>
             <Stack.Screen name='cadastroMotorista' component={CadastroMotoristaScreen}/>
             <Stack.Screen name='infoMotorista' component={InfoMotoristaScreen}/>
@@ -61,6 +77,9 @@ export default function Rotas({navigation}){
             <Stack.Screen name='EditarE' component={EditarEscolas}/>
             <Stack.Screen name='PassageirosE' component={PassageirosEscola}/>
             <Stack.Screen name='InfoAluno' component={InfoAluno}/>
+            <Stack.Screen name='Pedidos' component={Pedidos}/>
+            <Stack.Screen name='AddPassageiro' component={AddPassageiro}/>
+            <Stack.Screen name='TelaAluno' component={TelaAluno}/>
         </Stack.Navigator>
     )
 }

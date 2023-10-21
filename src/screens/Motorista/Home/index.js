@@ -17,11 +17,19 @@ export default function MHomeRota ({route, navigation}) {
     const [avisoA, setAvisoA] = useState('')
     const [avisoM, setAvisoM] = useState('')
     const [rec, setRec] = useState('')
+    var [saldoS, setSaldoS] = useState(0)
     const [saldo, setSaldo] = useState(0)
     const [aviso, setAviso] = useState(false)
     const [gatilho, setGatilho] = useState(true)
     const [avisoD, setAvisoD] = useState('')
     const q = query(collectionGroup(db, 'responsavel'), where('pago','==', true))
+    const [ver, setVer] = useState(false)
+    const s = []
+
+    const verSaldo=()=>{
+      setVer(current=>!current)
+
+    }
 
     useEffect(()=>{
         var date = new Date().getDate(); //Current Date
@@ -42,25 +50,30 @@ export default function MHomeRota ({route, navigation}) {
                 if(avisoA!=''){
                     setAviso(true)
                 }
-                
 
                 const snapshot2 = await getDocs(q)
                 snapshot2.forEach((item)=>{
                     const dado = item.data()
                     const men = dado.mensalidade
-                    console.log(men)
-                    setSaldo((prev)=>prev+men)
+                    s.push(men)
                     
                 })
+                for(var i = 0; i < s.length; i++) {
+                  saldoS += s[i];
+                }
+                setSaldo(saldoS)
             }
         });
+
+
+
+        
         
     },[aviso, gatilho])
 
     if (!rec){
         return null
     }
-
     const avisar =()=>{
         if(gatilho==true){
             setGatilho(false)
@@ -70,7 +83,7 @@ export default function MHomeRota ({route, navigation}) {
             }
         onAuthStateChanged(auth, async (user)=>{
             const docRef = doc(db, 'motorista', user.uid)
-            updateDoc(docRef, {aviso: avisoM, data: date})
+            updateDoc(docRef, {aviso: avisoM, data: date, avisando: true})
         })
         setAviso(true)
     }
@@ -84,7 +97,7 @@ export default function MHomeRota ({route, navigation}) {
             }
         onAuthStateChanged(auth, async (user)=>{
             const docRef = doc(db, 'motorista', user.uid)
-            updateDoc(docRef, {aviso: '', data: ''})
+            updateDoc(docRef, {aviso: '', data: '', avisando: false})
         })
         setAviso(false)
     }
@@ -133,15 +146,26 @@ export default function MHomeRota ({route, navigation}) {
               <Text style={{ fontSize: 18, marginBottom: 5 }}>Saldo total</Text>
               <View
                 style={{ alignContent: 'space-between', flexDirection: 'row' }}>
-                <Text
+                {ver?(
+                  <Text
                   style={{
                     fontSize: 29,
                     fontWeight: 'bold',
                     marginRight: '30%',
                   }}>
-                  R${saldo}
+                  R${saldo},00
                 </Text>
-                <TouchableOpacity style={styles.botaoAdd}>
+                ):(
+                  <Text
+                  style={{
+                    fontSize: 29,
+                    fontWeight: 'bold',
+                    marginRight: '30%',
+                  }}>
+                  R$ ****
+                </Text>
+                )}
+                <TouchableOpacity style={styles.botaoAdd} onPress={()=>verSaldo()}>
                 <Image source={require('../../../../assets/gradient.png')} style={styles.gradient} />
                   <Text
                     style={{
