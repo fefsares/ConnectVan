@@ -66,5 +66,26 @@ export default StyleSheet.create({
   gradient:{
     width:'100%', height:'100%', alignSelf: 'center', borderRadius:20, position:'absolute'
   },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    borderColor: 'black',
+    borderWidth: 2,
+    padding: 35,
+
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  centeredView:{
+    justifyContent:'center',
+    marginTop:'50%'
+  },
 });
 

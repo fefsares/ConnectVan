@@ -6,13 +6,15 @@ import {View, Text,Image,  TouchableOpacity, TextInput, Modal, ScrollView, Linki
 import MapView from 'react-native-maps';
 import { onAuthStateChanged } from 'firebase/auth';
 import {db, auth} from '../../../firebase/config';
-import {  doc, getDocs, collection, where, query, collectionGroup} from 'firebase/firestore';
+import {  doc, getDocs, collection, where, query, collectionGroup, updateDoc} from 'firebase/firestore';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { Entypo, FontAwesome, Ionicons} from '@expo/vector-icons';
+import { Entypo, FontAwesome, Ionicons, Feather} from '@expo/vector-icons';
 
 
 export default function MHomeRota ({navigation}) {
     const [rec, setRec] = useState([])
+    const [rota, setRota] = useState('')
+    const [modalVisible, setModalVisible] = useState(false)
     const [rec2, setRec2] = useState([])
     const [array, setArray] =useState([])
     const [lati, setLati] = useState('')
@@ -28,6 +30,7 @@ export default function MHomeRota ({navigation}) {
       { label: "Tarde", value: "tarde" },
       { label: "Integral", value: "integral" },
     ]);
+    const [viagem, setViagem] = useState(false);
     const q = query(collectionGroup(db, 'passageiros'), where('periodo','==', periodoValue))
     useEffect(()=>{
         local()
@@ -59,21 +62,24 @@ export default function MHomeRota ({navigation}) {
     if(!longi || !lati){
       return null
     }
-    const iniciar = () =>{
-        local()
+    const iniciar = async() =>{
+        await local()
         const dado1 = rec2.toString();
         const dadoe1 = dado1.replace(/,/g, '')
         const e1 = dadoe1.replace('/undefined', '')
         const end1 = e1.replace(/ /g, '%20')
-
-
         const dado = rec.toString();
         const dadoe = dado.replace(/,/g, '')
         const e = dadoe.replace('/undefined', '')
         const end = e.replace(/ /g, '%20')
         console.log(end)
-        Linking.openURL('https://www.google.com/maps/dir/'+ lati +',' + longi + end + end1)
-        
+        await Linking.openURL('https://www.google.com/maps/dir/'+ lati +',' + longi + end + end1)
+    }
+
+    const enviar=()=>{
+      onAuthStateChanged(auth, async(user)=>{
+        updateDoc(doc(db, 'motorista', user.uid), {rota: rota})
+      })
     }
     async function local(){
         const{granted} = await requestForegroundPermissionsAsync();
@@ -106,8 +112,32 @@ export default function MHomeRota ({navigation}) {
           );
         }
     return (
-
         <View style={styles.container}>
+                <Modal
+                  animationType="slide"
+                  transparent={true}
+                  visible={modalVisible}
+                  onRequestClose={() => {
+                  setModalVisible(!modalVisible);
+                  }}>
+                      <View style={styles.centeredView}>
+                          <View style={styles.modalView}>
+                              <View style={{position:'absolute', padding:10}}>
+                                  <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
+                                      <Feather name="x" size={24} color="black" />
+                                  </TouchableOpacity>
+                              </View>
+                              <Text>Após iniciar a rota, copie e cole o compartilhamento de trajeto a baixo e envie.</Text>
+                              <TextInput value={rota} onChangeText={(value)=>setRota(value)}/>
+                              <TouchableOpacity onPress={()=>iniciar()}>
+                                <Text>Abrir maps</Text>
+                              </TouchableOpacity>
+                              <TouchableOpacity onPress={()=>enviar()}>
+                                <Text>Enviar rota</Text>
+                              </TouchableOpacity>
+                          </View>
+                      </View>
+                  </Modal>
           <View style={{flexDirection:'row', paddingHorizontal:10}}>
             <TouchableOpacity onPress={()=>navigation.navigate('HomeMotorista')}>
               <Entypo name="chevron-left" size={24} color="black" style={[styles.iconBack, {marginTop:16}]}/>
@@ -138,6 +168,7 @@ export default function MHomeRota ({navigation}) {
                 renderItem={renderItem}
             />
 
+
             {escola.map((item)=>{
               <View style={{flexDirection:'row', marginTop:'2%', marginRight:'47%'}}>
               <View style={[styles.viewMae, {height:13}]}/>
@@ -148,7 +179,7 @@ export default function MHomeRota ({navigation}) {
           </View>
             })}
             <View style={styles.viewBotao}>
-              <TouchableOpacity onPress={() => iniciar()} style={styles.botaoMaps}>
+              <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.botaoMaps}>
                     <Image source={require('../../../../assets/gradient.png')} style={styles.gradient}/>
                     <Ionicons name="ios-location-sharp" size={24} color="black" />
                     <Text style={{fontSize:16, fontWeight:'bold', marginLeft:'5%'}}>Abrir no Maps</Text>

@@ -7,6 +7,7 @@ import {View, Text,Image,  TouchableOpacity, TextInput, Modal, ScrollView, Keybo
 import { doc, getDoc, onSnapshot, getDocs, collection, collectionGroup, query, where, updateDoc} from 'firebase/firestore';
 
 export default function Mensalidade({navigation}){
+    const [pagantes, setPagantes] = useState(0)
     const [dia, setDia] = useState('')
     const [mes, setMes] = useState('')
     const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
@@ -16,18 +17,14 @@ export default function Mensalidade({navigation}){
     const [apag, setApag] = useState([])
     const [atra, setAtra] = useState([])
 
-    const [pagA, setPagA] = useState([])
-    const [apagA, setApagA] = useState([])
-    const [atraA, setAtraA] = useState([])
+    const [qntPagar, setQntPagar] = useState(null)
+    const [qntPagando, setQntPagando] = useState(null)
+    const [qntAtra, setQntAtra] = useState(null)
 
     const pago = query(collectionGroup(db, 'responsavel'), where('pago','==', true))
     const pagar = query(collectionGroup(db, 'responsavel'), where('pago','==', false), where('data', '>', dia))
     const atraso = query(collectionGroup(db, 'responsavel'), where('pago','==', false), where('data', '<=', dia))
-    const resp1 = []
-    const resp2 = []
-    const resp3 = []
-    
-    const [gatilho, setGatilho] = useState(false)
+
 
     useEffect(()=>{
         var date = new Date().getDate(); //Current Date
@@ -36,80 +33,145 @@ export default function Mensalidade({navigation}){
         setMes(monthNames[month])
 
         consultas()
+        consultas2()
+        consultas3()
+    },[])
 
-        console.log('a')
+    const consultas = async ()=> {
+        await getDocs(pago).then((docs)=>{
+            const arr = []
 
-
-    },[gatilho])
-
-    const consultas = async()=>{
-        const q1 = await getDocs(pago)
-        const q2 = await getDocs(pagar)
-        const q3 = await getDocs(atraso)
-
-        q1.forEach((responsavel)=>{
-            const dado = responsavel.data()
-            resp1.push(dado)
-            setPag(resp1)
+            docs.forEach((responsavel)=>{
+                const dado = responsavel.data()
+                arr.push(dado)
+            })
+            console.log(arr)
+            setQntPagar(arr.length)
         })
-
-        q2.forEach((responsavel)=>{
-            const dado = responsavel.data()
-            resp2.push(dado)
-            setApag(resp2)
-        })
-
-        q3.forEach((responsavel)=>{
-            const dado = responsavel.data()
-            resp3.push(dado)
-            setAtra(resp3)
-        })
-
-        setPagA(pag.length)
-        setApagA(apag.length)
-        setAtraA(atra.length)
-        console.log(pagA, apagA, atraA)
-        setGatilho(true)
     }
 
-    if (!pag || !apag || !atra){
-        return null
+    const consultas2=async()=>{
+        await getDocs(pagar).then((docs)=>{
+            const arr = []
+
+            docs.forEach((responsavel)=>{
+                const dado = responsavel.data()
+                arr.push(dado)
+            })
+            console.log(arr)
+            setQntPagando(arr.length)
+        })
     }
+
+    const consultas3=async()=>{
+        await getDocs(atraso).then((docs)=>{
+            const arr = []
+
+            docs.forEach((responsavel)=>{
+                const dado = responsavel.data()
+                arr.push(dado)
+            })
+            console.log(arr)
+            setQntAtra(arr.length)
+        })
+    }
+
+    if(qntPagando != null){
+
+        consultas()
+        consultas2()
+        consultas3()
+    }
+    
     return(
-        <View>
-            <TouchableOpacity onPress={()=>navigation.openDrawer()} style={{padding:30}}>
-                <Entypo
-                    name="menu"
-                    size={34}
-                    color="black"
-                />
+        <View style={{flex:1, padding: 45}}>
+            <Image source={require('../../../../assets/gradient.png')} style={{width:'100%', height:'100%', position:'absolute'}}/>
+            <View style={{ marginTop:'10%', justifyContent:'center', marginBottom:'2%'}}>
+                <TouchableOpacity onPress={()=>navigation.openDrawer()} style={{flex:1,position:'absolute'}}>
+                  <Entypo name="menu" size={29} color="black" style={styles.iconMenu}/>
+                </TouchableOpacity>
+                <View style={{ justifyContent:'center', alignItems:'center'}}>
+                <Text style={{fontSize:18, fontFamily:'AileronH'}}>Mensalidades</Text>
+              </View>
+            </View>
+            <View style={styles.fundoTab1}>
+            <View style={{flexDirection:'row', justifyContent:'center'}}> 
+                <Text style={styles.mes}>{mes}</Text>
+            </View>
+            <View style={styles.linha}/>
+            <View styles={{alignItems:'center', justifyContent:'center', }}>
+                <Text style={styles.valor}>R$ 1.800</Text>
+                <Text style={styles.valorAcum}>Valor acumulado</Text>
+            </View>
+            <View style={styles.viewBarra}>
+                <View style={[styles.barraVerm, {flex: qntAtra}]}/>
+                <View style={[styles.barraAmarelo, {flex: qntPagando}]}/>
+                <View style={[styles.barraCinza, {flex: qntPagar}]}/>
+            </View>
+            <View style={styles.viewQuadrados}>
+                <View style={{flexDirection:'column', alignItems:'center', marginLeft:'13%'}}>
+                    <View style={styles.quadrVerm} />
+                    <Text style={{marginTop:3}}>Atrasados</Text>
+                </View>
+                <View style={{flexDirection:'column', alignItems:'center'}}>
+                    <View style={styles.quadrAmarelo} />
+                    <Text style={{marginTop:3}}>Pagos</Text>
+                </View>
+                <View style={{flexDirection:'column', alignItems:'center', marginRight:'17%'}}>
+                    <View style={styles.quadrCinza} />
+                    <Text style={{marginTop:3}}>A pagar</Text>
+                </View>
+            </View>
+        </View>
+        <View style={styles.fundoTab1}>
+        {pagantes == 0(
+            <View style={{flexDirection:'row', justifyContent:'space-between'}}> 
+                <TouchableOpacity style={{marginTop:'5%',marginLeft:'5%'}}>
+                <Entypo name="chevron-left" size={26} color="black" />
+                </TouchableOpacity>
+                <Text style={styles.mes}>Atrasados</Text>
+                <TouchableOpacity style={{marginTop:'5%',marginRight:'5%'}}>
+                <Entypo name="chevron-right" size={26} color="black" />
+                </TouchableOpacity>
+            </View>
+        )}
+        {/* {pagantes = '1' (
+            <View style={{flexDirection:'row', justifyContent:'space-between'}}> 
+                <TouchableOpacity style={{marginTop:'5%',marginLeft:'5%'}}>
+                <Entypo name="chevron-left" size={26} color="black" />
+                </TouchableOpacity>
+                <Text style={styles.mes}>Pagos</Text>
+                <TouchableOpacity style={{marginTop:'5%',marginRight:'5%'}}>
+                <Entypo name="chevron-right" size={26} color="black" />
+                </TouchableOpacity>
+            </View>
+        )}
+        {pagantes = '2' (
+            <View style={{flexDirection:'row', justifyContent:'space-between'}}> 
+                <TouchableOpacity style={{marginTop:'5%',marginLeft:'5%'}}>
+                <Entypo name="chevron-left" size={26} color="black" />
+                </TouchableOpacity>
+                <Text style={styles.mes}>A pagar</Text>
+                <TouchableOpacity style={{marginTop:'5%',marginRight:'5%'}}>
+                <Entypo name="chevron-right" size={26} color="black" />
+                </TouchableOpacity>
+            </View>
+        )} */}
+        
+        <View style={styles.linha}/>
+        <ScrollView>
+          <View style={styles.viewAtr1}> 
+            <View style={{flexDirection:'column'}}>
+              <Text style={styles.nome}>(Nome)</Text>
+              <Text style={styles.dataVenc}>(Data vencimento)</Text>
+            </View>
+            <TouchableOpacity style={{marginTop:'4%'}}>
+              <Ionicons name="notifications" size={24} color="black" />
             </TouchableOpacity>
-            <Text>{mes}</Text>
-            <Text>pago: {pagA}</Text>
-            <Text>a pagar: {apagA}</Text>
-            <Text>atrasado: {atraA}</Text>
+          </View>
+        </ScrollView>
 
-            {/* {atra?(
-                    <View style={{width:'100%', height:'5%', paddingHorizontal:'10%', flexDirection:'row'}}>
-                        <View style={{backgroundColor:'red', height:'100%', flex:pagA}}/>
-                        <View style={{backgroundColor:'blue', height:'100%', flex:apagA}}/>
-                        <View style={{backgroundColor:'green', height:'100%', flex:atraA}}/>
-                    </View>
-            ):null} */}
-            
-
-
-            {atra.map((item)=>{
-                return(
-                    <View>
-                        <Text>{item.nome}</Text>
-                        <Text>Venceu dia {item.data} de {mes}</Text>
-                        <TouchableOpacity>
-                            <Ionicons name="notifications" size={24} color="black" />
-                        </TouchableOpacity>
-                    </View>
-                )
-            })}
+      </View>
         </View>
     )
 }

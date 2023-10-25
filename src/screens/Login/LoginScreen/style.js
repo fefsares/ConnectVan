@@ -1,45 +1,43 @@
 import {StyleSheet} from 'react-native'
 
-
-
 export default StyleSheet.create({
   logo:{
-    width: 150, 
-    height: 150, 
-    margin: 2,
+    width: 130, 
+    height: 130, 
     resizeMode: 'stretch',
     borderRadius:100,
-    marginTop:90
+    marginTop:80
   },
   tela:{
     width:'100%',
     alignItems: 'center',
     paddingVertical:20
   },
-
   inner:{
     flex:1,
     paddingHorizontal:20,
     alignItems:'center',
-    backgroundColor:'white'
-    
+    backgroundColor:'white',
+    height:'100%'
   },
   connect:{
-    fontSize: 60,
+    fontSize: 40,
     color: '#FFBF00',
-    fontFamily: 'AileronH'
+    fontFamily: 'AileronH',
+    marginTop:15
   },
   van:{
-    fontSize: 60,
+    fontSize: 40,
+    marginTop:-6  ,
     fontFamily: 'AileronH'
   },
   viewInput:{
     flexDirection:'row', 
-    alignItems:'center', 
-    paddingVertical:10
+    alignItems:'center',
+    marginTop:15 
   },
   input:{
-    width:'100%',
+    width:'95%',
     height: 50,
     borderRadius: 8,
     backgroundColor: '#ECECEC',
@@ -75,18 +73,9 @@ export default StyleSheet.create({
     justifyContent:'center',
     marginTop:'50%'
   },
-  botao:{
-    width:'100%',
-    backgroundColor:'yellow',
-    alignItems: 'center',
-    height:50,
-    justifyContent:'center',
-    borderRadius:50
-  },
   gradient:{
     width:'100%', height:50, alignSelf: 'center', borderRadius:50
   },
-
   modalView: {
     margin: 20,
     backgroundColor: 'white',
@@ -110,12 +99,29 @@ export default StyleSheet.create({
   viewButton:{
     width:'40%', 
     alignItems:'center', 
+    paddingTop:11
   },
   textButton:{
-    fontSize:25, 
+    fontSize:17, 
+    fontWeight:'bold',
     position:'absolute',
     fontFamily: 'AileronR'
   },
-  
+  botaoEntrar:{
+    width:'90%',
+    backgroundColor:'yellow',
+    alignItems: 'center',
+    height:45,
+    justifyContent:'center',
+    borderRadius:50,
+  },
+  botaoCadastrar:{
+    width:155,
+    backgroundColor:'yellow',
+    alignItems: 'center',
+    height:45,
+    justifyContent:'center',
+    borderRadius:50,
+  },
 })
 

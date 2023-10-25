@@ -15,12 +15,14 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   connect:{
-    fontSize: 60,
-    fontFamily: 'AileronH',
+    fontSize: 40,
     color: '#FFBF00',
+    fontFamily: 'AileronH',
+    marginTop:15
   },
   van:{
-    fontSize: 60,
+    fontSize: 40,
+    marginTop:-6  ,
     fontFamily: 'AileronH'
   },
   icon:{

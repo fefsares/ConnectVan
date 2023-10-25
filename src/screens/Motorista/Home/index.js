@@ -2,7 +2,7 @@
 import { Entypo, FontAwesome, AntDesign, FontAwesome5, Ionicons } from '@expo/vector-icons';
 import { useEffect, useState, useRef } from 'react'
 import styles from './style'
-import { onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 import {db, auth} from '../../../firebase/config';
 import {View, Text,Image,  TouchableOpacity, TextInput, Modal, ScrollView, Keyboard} from 'react-native'
 import { doc, getDoc, onSnapshot, getDocs, collection, collectionGroup, query, where, updateDoc} from 'firebase/firestore';
@@ -30,7 +30,6 @@ export default function MHomeRota ({route, navigation}) {
       setVer(current=>!current)
 
     }
-
     useEffect(()=>{
         var date = new Date().getDate(); //Current Date
         var month = new Date().getMonth(); //Current Month
@@ -47,9 +46,13 @@ export default function MHomeRota ({route, navigation}) {
                 setRec(snapshot.data());
                 setAvisoA(rec.aviso)
                 setAvisoD(rec.data)
-                if(avisoA!=''){
+                if(avisoA!=''|| avisoA != undefined){
                     setAviso(true)
                 }
+                else{
+                  console.log(avisoA)
+                }
+                
 
                 const snapshot2 = await getDocs(q)
                 snapshot2.forEach((item)=>{
@@ -181,7 +184,6 @@ export default function MHomeRota ({route, navigation}) {
             </View>
           </View>
         </View>
-
         <View style={[styles.saldot, { paddingBottom: '10%' }]}>
           <View style={[styles.fundoSaldo, {flex:1}]}>
             <View style={styles.viewMae}/>

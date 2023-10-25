@@ -15,7 +15,6 @@ export default function Passageiros({navigation}) {
                 const docRef = doc(db, 'responsavel', user.uid)
                 const snapshot = await getDoc(docRef)
                 setRec(snapshot.data())
-                
         });
         setAluno(rec.nomeAluno)
         console.log(aluno)

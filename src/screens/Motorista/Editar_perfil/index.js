@@ -18,7 +18,12 @@ export default function EditarPerfil({navigation}) {
     const [emailM, setEmailM] = useState('')
     const [telefoneM, setTelefoneM] = useState('')
     const [placaM, setPlacaM] = useState('')
+    const logout=()=>{
+      signOut(auth).then(()=>{
+        navigation.navigate('login')
+      })
 
+    }
     useEffect(()=>{
         onAuthStateChanged(auth, async (user)=>{
             const docRef = doc(db, 'motorista', user.uid)
@@ -36,7 +41,7 @@ export default function EditarPerfil({navigation}) {
             if(nomeM!=''){
                 updateDoc(docRef, {nome:nomeM})
             }
-            if(telefoneM!='' && telefoneU.length==15){
+            if(telefoneM!='' && telefoneM.length==15){
                 updateDoc(docRef, {telefone:telefoneM})
             }
             if(emailM!=''){
@@ -119,8 +124,8 @@ export default function EditarPerfil({navigation}) {
               />
             </View>
             
-            <View style={styles.viewBotao} onPress={()=>navigation.navigate('HomeMotorista')}>
-              <TouchableOpacity style={[styles.botaoAdd, {backgroundColor:'gray'}]}>
+            <View style={styles.viewBotao}>
+              <TouchableOpacity style={[styles.botaoAdd, {backgroundColor:'gray'}]} onPress={()=>navigation.navigate('HomeMotorista')}>
                 <Image source={require('../../../../assets/gradient2.png')} style={styles.gradient} />
                 <Text style={{fontSize:16, position:'absolute', fontFamily:'AileronH'}}>Cancelar</Text>
               </TouchableOpacity>
@@ -129,7 +134,9 @@ export default function EditarPerfil({navigation}) {
                 <Text style={{fontSize:16, fontFamily:'AileronH', position:'absolute'}}>Finalizar</Text>
               </TouchableOpacity>
             </View>
-    
+            <TouchableOpacity onPress={()=>logout()}>
+              <Text>Logout</Text>
+            </TouchableOpacity>
           </View>
         </View>
       );

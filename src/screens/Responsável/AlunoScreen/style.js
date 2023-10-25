@@ -37,7 +37,7 @@ export default StyleSheet.create({
     fontFamily:'AileronR'
   },
   gradient:{
-  height:50, alignSelf: 'center', borderRadius:50, width:'100%'
+  height:'100%', alignSelf: 'center', borderRadius:50, width:'100%'
   },
   botao:{
     backgroundColor:'yellow',
