@@ -35,6 +35,7 @@ export default function Mensalidade({navigation}){
         consultas()
         consultas2()
         consultas3()
+        console.log(pagantes)
     },[])
 
     const consultas = async ()=> {
@@ -45,7 +46,6 @@ export default function Mensalidade({navigation}){
                 const dado = responsavel.data()
                 arr.push(dado)
             })
-            console.log(arr)
             setQntPagar(arr.length)
         })
     }
@@ -58,7 +58,6 @@ export default function Mensalidade({navigation}){
                 const dado = responsavel.data()
                 arr.push(dado)
             })
-            console.log(arr)
             setQntPagando(arr.length)
         })
     }
@@ -71,7 +70,6 @@ export default function Mensalidade({navigation}){
                 const dado = responsavel.data()
                 arr.push(dado)
             })
-            console.log(arr)
             setQntAtra(arr.length)
         })
     }
@@ -125,15 +123,16 @@ export default function Mensalidade({navigation}){
         </View>
         <View style={styles.fundoTab1}>
         {pagantes == 0(
-            <View style={{flexDirection:'row', justifyContent:'space-between'}}> 
-                <TouchableOpacity style={{marginTop:'5%',marginLeft:'5%'}}>
-                <Entypo name="chevron-left" size={26} color="black" />
-                </TouchableOpacity>
-                <Text style={styles.mes}>Atrasados</Text>
-                <TouchableOpacity style={{marginTop:'5%',marginRight:'5%'}}>
-                <Entypo name="chevron-right" size={26} color="black" />
-                </TouchableOpacity>
-            </View>
+            // <View style={{flexDirection:'row', justifyContent:'space-between'}}> 
+            //     <TouchableOpacity style={{marginTop:'5%',marginLeft:'5%'}}>
+            //     <Entypo name="chevron-left" size={26} color="black" />
+            //     </TouchableOpacity>
+            //     <Text style={styles.mes}>Atrasados</Text>
+            //     <TouchableOpacity style={{marginTop:'5%',marginRight:'5%'}}>
+            //     <Entypo name="chevron-right" size={26} color="black" />
+            //     </TouchableOpacity>
+            // </View>
+            <Text>aaa</Text>
         )}
         {/* {pagantes = '1' (
             <View style={{flexDirection:'row', justifyContent:'space-between'}}> 
